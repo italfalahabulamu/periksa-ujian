@@ -1,0 +1,23 @@
+node_modules/
+dist/
+.wrangler/
+coverage/
+playwright-report/
+test-results/
+supabase/.temp/
+supabase/.branches/
+*.log
+
+# Rahasia: hanya .env.example yang boleh masuk git
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Data siswa dan scan nyata tidak boleh masuk git
+tests/fixtures/real/
+scans/
+*.scan.*
+
+.DS_Store
