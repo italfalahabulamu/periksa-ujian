@@ -31,6 +31,14 @@ Kunci, rubrik, dan formula dibekukan sebagai versi; finalisasi dan perubahan ses
 | `docs/prd/11-OPEN-DECISIONS.md` | Keputusan terbuka D-01..D-15 |
 | `docs/prd/12-IMPLEMENTATION-BACKLOG.md` | Backlog Epic A–G siap dijadikan GitHub Issues |
 
+## Rancangan turunan (Fase 1, usulan)
+
+`docs/research/riset-2026-10-17.md` · `docs/architecture.md` · `docs/data-model.md` · `docs/permissions-rls.md` ·
+`docs/rpc-contracts.md` · `docs/omr-template-spec.md` · `docs/omr-spike-plan.md` · `docs/threat-model.md` ·
+`docs/test-strategy.md` · `docs/tasks.md` · `docs/decisions.md`. ADR: `docs/orchestrator/adr/0001-stack-dari-hris.md`, `0002-runtime-omr.md`, `0003-model-data-versi-dan-audit.md`.
+
+Perubahan terhadap rancangan PRD dicatat di ADR-0003 (bagian "Penyimpangan"). Isi `docs/prd/` tidak diubah.
+
 ## Yang harus diputuskan sebelum Gerbang 1 ditutup
 
 Lihat `docs/prd/11-OPEN-DECISIONS.md`. Yang paling menentukan arsitektur: D-02 (repo terpisah atau monorepo;

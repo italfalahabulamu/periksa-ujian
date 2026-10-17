@@ -4,8 +4,9 @@ Aplikasi pemeriksaan ujian SMP Pesantren Modern Al-Falah Abu Lam U: pilihan gand
 lembar jawaban hasil pindai/foto, esai dinilai guru dengan rubrik digital, nilai dihitung dan difinalisasi
 dengan jejak audit.
 
-> **Status: Fase 0 (perencanaan).** Belum ada kode aplikasi. Yang ada baru dokumen dasar dan PRD v0.1.
-> Kode ditulis setelah PRD (Gerbang 1) dan arsitektur (Gerbang 2) disetujui.
+> **Status: Fase 1 (perencanaan; usulan Gerbang 2 sudah disusun).** Belum ada kode aplikasi. Yang ada: PRD v0.1,
+> riset, arsitektur, model data, izin/RLS, kontrak RPC, model ancaman, strategi tes, dan rencana spike OMR, semuanya
+> berstatus **usulan**. Kode ditulis setelah PRD (Gerbang 1) dan arsitektur (Gerbang 2) disetujui.
 
 ## Baca dulu (urutan)
 
@@ -14,8 +15,12 @@ dengan jejak audit.
 3. `AGENTS.md` — aturan kerja dan aturan keras untuk agent dan pengembang.
 4. `docs/orchestrator/adr/0001-stack-dari-hris.md` — alasan stack.
 5. `docs/hris-adoption-map.md` — bagian HRIS/FTS yang diadopsi dan yang tidak.
-6. `docs/prd/11-OPEN-DECISIONS.md` — keputusan yang wajib dijawab sebelum implementasi.
-7. `docs/data/` — template data yang harus disiapkan (kelas, siswa).
+6. `docs/decisions.md` — **mulai di sini bila Anda pemilik proyek**: keputusan terbuka dengan rekomendasi dan urutan jawab.
+7. `docs/research/riset-2026-10-17.md` — temuan riset (batas platform, kapasitas, OMR) dan yang belum terverifikasi.
+8. Rancangan: `docs/architecture.md`, `docs/data-model.md`, `docs/permissions-rls.md`, `docs/rpc-contracts.md`,
+   `docs/threat-model.md`, `docs/test-strategy.md`, `docs/omr-template-spec.md`, `docs/omr-spike-plan.md`.
+9. `docs/tasks.md` — modul, dependensi, jalur kritis.
+10. `docs/data/` — template data yang harus disiapkan (kelas, siswa).
 
 ## Lingkup singkat
 

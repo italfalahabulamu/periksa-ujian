@@ -25,6 +25,11 @@ Sampai itu selesai, butir di bawah adalah **usulan** yang berasal dari FTS, buka
 | 12 | Tes database ke Postgres sungguhan (`scripts/test-db.sh`) | `scripts/` | Wajib untuk RLS, transisi status, perhitungan nilai | Foundation |
 | 13 | Impor CSV (`public/js/lib/csv.js`) dan ekspor (`export-xlsx.js`) | `public/js/lib/` | Impor siswa/kelas dengan preview dan validasi (B-04); ekspor CSV dulu, XLSX di P1 | Akademik |
 | 14 | Kompresi gambar (`image-compress.js`), unggah berkas (`proof-uploader.js`) | `public/js/lib/` | Pola validasi tipe/ukuran; **jangan** mengompres scan OMR yang menjadi bukti asli | Upload |
+| 15 | `.github/workflows/keepalive.yml` | sama | Mencegah proyek Supabase Free dijeda setelah 1 minggu idle | Foundation |
+| 16 | `src/vendor/pdf.js` + `pdf.worker.js` | sama | Render PDF scan di Web Worker; batasi halaman/dimensi; lisensi vendor dicatat di `THIRD_PARTY.md` | Upload |
+| 17 | `src/vendor/jsqr.js` | sama | Hanya untuk tahap QR per siswa (P1, D-07) | P1 |
+| 18 | `public/js/lib/backup.js` (cadangan zip) | sama | Cadangan data hasil/audit sebelum rilis dan latihan restore | Rilis |
+| 19 | `scripts/test-db.sh`, `scripts/check-live.mjs` | `scripts/` | Harness tes Postgres sungguhan; pemeriksaan kesehatan sebelum hari ujian | Foundation |
 
 ## Tidak diadopsi
 

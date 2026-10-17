@@ -38,9 +38,10 @@ Status dan keputusan terkunci: `docs/orchestrator/STATE.md`.
 - Backend: Supabase (Postgres, Auth, RLS, RPC/fungsi SQL, Storage privat, Edge Function Deno/TypeScript).
 - Hosting: Cloudflare Workers static assets (`wrangler.jsonc`); `scripts/build.js` menyuntik konfigurasi publik.
 - Tes: Vitest (unit), tes database terhadap Postgres sungguhan (RLS, RPC, transisi status), E2E. CI: GitHub Actions.
-- **Pemrosesan OMR: belum diputuskan.** Library, runtime, dan lokasi eksekusi (browser atau worker terpisah)
-  ditentukan setelah prototipe pada scan nyata (ADR-0002, Gerbang 2). Jangan mengasumsikan library native
-  berjalan di runtime Cloudflare tanpa uji kompatibilitas.
+- **Pemrosesan OMR: diusulkan di ADR-0002, final setelah spike S1.** Pengukuran gelembung di browser (Web Worker),
+  klasifikasi status di Postgres dari ambang `omr_profiles`. Workers Free (10 ms CPU) dan Edge Function (2 detik CPU)
+  tidak dipakai untuk memproses gambar. Library gambar/OMR baru (mis. OpenCV.js) hanya boleh ditambahkan setelah
+  lisensi dan ukurannya diverifikasi dan dicatat. Jangan menjadikan OMRChecker sebagai dependensi.
 
 > Stack ini dipilih mengikuti FTS yang diturunkan dari HRIS. PRD meminta pola HRIS diverifikasi dari
 > repository, bukan ditebak; FTS dipakai sebagai sumber verifikasi sampai audit HRIS langsung dilakukan (A-01).
@@ -53,6 +54,10 @@ docs/
   PRD.md                    indeks dan ringkasan produk
   prd/                      13 berkas PRD sumber (PRD, scope, sitemap, wireframe, arsitektur, DB, OMR, role, tes, roadmap, keputusan, backlog)
   hris-adoption-map.md      bagian HRIS/FTS yang diadopsi dan yang tidak
+  decisions.md              paket keputusan G1/G2 dengan rekomendasi
+  research/                 riset dan sumbernya
+  architecture.md data-model.md permissions-rls.md rpc-contracts.md threat-model.md test-strategy.md
+  omr-template-spec.md omr-spike-plan.md tasks.md      rancangan Fase 1 (usulan sampai G2)
   data/                     template data dasar (kelas, siswa)
   orchestrator/             STATE.md, handoffs/, adr/
 public/                     sumber frontend statis (index.html, js/, css/, _headers, manifest, sw.js)
