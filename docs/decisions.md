@@ -1,8 +1,41 @@
 # Paket keputusan untuk Gerbang 1 dan 2
 
-Status semua baris: **menunggu persetujuan pemilik proyek**. "Rekomendasi" adalah usulan dengan alasan, bukan
+Status: baris yang tercantum di §0 sudah **dijawab pemilik pada 2026-10-18** (penegasan resmi Gerbang 1/2 masih
+menunggu); baris lain menunggu. "Rekomendasi" adalah usulan dengan alasan, bukan
 keputusan. Bila Anda setuju semuanya, cukup balas "setuju semua"; bila tidak, sebut ID yang berbeda.
 Keputusan D-01..D-15 berasal dari `docs/prd/11-OPEN-DECISIONS.md`; D-16..D-22 ditambahkan oleh riset ini.
+
+## 0. Jawaban pemilik proyek (2026-10-18)
+
+| ID | Jawaban | Sesuai rekomendasi? | Dampak |
+|---|---|---|---|
+| D-12 | Sekitar **150 siswa** per ujian; **PG + esai (2–3 halaman esai)** → 3–4 halaman scan per siswa; soal per siswa **"> 10"** (jumlah pasti belum diketahui) | — | Model kapasitas di bawah; jumlah soal menentukan ukuran sampel uji OMR |
+| D-16 | Ujian pertama **kurang dari 1 bulan** (sebelum ±18 Nov 2026) | — | MVP penuh (±7–9 minggu) tidak muat → **pilot ramping** (`tasks.md` §0) |
+| Cakupan | **Pilot ramping + OMR** | Ya | Review OMR dibangun lebih dulu; mode input manual sebagai cadangan (`tasks.md` §0) |
+| D-03 | **Proyek Supabase baru terpisah, tetap Free** | Tidak (rekomendasi: Pro) | Ketersediaan slot proyek aktif **belum diverifikasi**; wajib `keepalive`, purge scan, batas kapasitas |
+| D-05 | **Template baru dari aplikasi** (belum punya LJK) | Ya | Kita yang menentukan geometri; cetak uji dulu |
+| D-06 | **Foto ponsel** (bukan scanner) | **Tidak** (rekomendasi: scanner) | Jalur utama kini berisiko lebih tinggi; template mode ponsel, meja pemotretan, gate ponsel, cadangan (`omr-template-spec.md` §8, `omr-spike-plan.md` §7) |
+| D-07 | **Kolom digit kode peserta + digit pemeriksa** | Ya | Sesuai `omr-template-spec.md` |
+| D-08, D-09 | **Setuju rekomendasi** (kosong = 0; ganda/ambigu dicek manusia lalu 0 bila ganda; tanpa nilai negatif; bobot eksplisit per ujian; nilai akhir 2 desimal) | Ya | Tidak ada perubahan rancangan |
+| D-14 | Scan **dihapus 90 hari setelah final** | Ya | Pada Free hanya aman bila ujian bersamaan ≤ 2–4 (lihat di bawah) |
+| D-20 | Operator/guru memakai **laptop/PC dengan Chrome atau Edge** | Ya | OMR berjalan di laptop; ponsel hanya untuk memotret |
+
+**Kapasitas dengan jawaban di atas** (150 siswa × 3–4 halaman; Free = 1.000 MB; ukuran per halaman masih asumsi):
+
+| Halaman/siswa | MB/halaman | MB per ujian | Ujian bersamaan muat di 1 GB |
+|---:|---:|---:|---:|
+| 3 | 0,4 | 180 | 5,6 |
+| 4 | 0,2 / 0,4 / 0,8 | 120 / 240 / 480 | 8,3 / 4,2 / 2,1 |
+
+Dengan retensi 90 hari, semua ujian dalam jendela 90 hari menumpuk bersamaan. Untuk pilot (1–2 ujian) Free cukup;
+untuk pekan ujian dengan banyak mapel PG + esai **tidak cukup** → pilihan: purge lebih cepat (mis. 14–30 hari setelah
+final), kurangi halaman esai, atau naik ke Pro sebelum pekan ujian. **Foto ponsel mentah (12 MP, ±3–5 MB)** akan
+memakai 1,35–3 GB per ujian, sehingga **wajib diperkecil di klien** sebelum diunggah (`omr-template-spec.md` §8).
+
+**Masih dibutuhkan dari pemilik** (tidak menghalangi mulai, tetapi menentukan angka): jumlah soal pasti per ujian
+(maksimum PG dan jumlah soal esai), jumlah mapel dan tanggal ujian pertama, jenis ponsel (Android/iPhone), panjang
+kode peserta (mis. NIS berapa digit), konfirmasi slot proyek Supabase Free dari tim Supabase, dan penegasan resmi
+Gerbang 1.
 
 ## A. Yang paling membuka jalan (jawab dulu)
 
@@ -24,7 +57,7 @@ Keputusan D-01..D-15 berasal dari `docs/prd/11-OPEN-DECISIONS.md`; D-16..D-22 di
 | D-03 | Supabase proyek sama/terpisah dari HRIS | **Proyek terpisah, paket Pro ($25/bln)** bila organisasi sudah memakai 2 proyek aktif | Data anak + scan + ledakan dampak RLS; Pro juga menutup storage 1 GB, jeda 1 minggu, dan memberi cadangan (R3). Alternatif: skema terpisah di proyek lain, **tidak dianjurkan** (blast radius, dan proyek FTS direncanakan anonimisasi 31 Des 2026). Jumlah proyek saat ini perlu dicek tim Supabase |
 | D-04 | Login/SSO HRIS | **Tidak di MVP.** Akun staf dibuat admin; reset sandi oleh admin | SSO menautkan domain keamanan HRIS; evaluasi terpisah |
 | D-05 | Format lembar | **A4 portrait, ≤ 50 soal/halaman, opsi A–E (ujian memilih 4 atau 5), 4 penanda sudut + batang orientasi**; esai di halaman terpisah | Cocok kebiasaan LJK; detail di `omr-template-spec.md`. Format lain = template versi lain |
-| D-06 | Sumber scan | **Scanner (ADF/flatbed) grayscale 150–200 dpi** untuk MVP; foto ponsel hanya setelah gate terpisah lulus | Variasi foto menaikkan risiko salah baca dan tingkat review |
+| D-06 | Sumber scan | **Scanner (ADF/flatbed) grayscale 150–200 dpi** untuk MVP; foto ponsel hanya setelah gate terpisah lulus. **→ Pemilik memilih foto ponsel (§0); scanner menjadi cadangan** | Variasi foto menaikkan risiko salah baca dan tingkat review |
 | D-07 | Identifikasi peserta | **Blok digit kode peserta (dengan digit pemeriksa Luhn) + kode ujian + kode halaman** di MVP; **QR per siswa** saat fitur cetak lembar (P1) tersedia | Tidak perlu mencetak per-siswa untuk memulai; cek-digit menangkap salah baca. `jsqr.js` sudah ada di FTS untuk tahap QR |
 | D-08 | Skor jawaban ganda/kosong | `blank_policy=zero` (tanpa pengurangan); ganda/ambigu **wajib review**; ganda yang dikonfirmasi → `multiple_policy=zero`; tanpa nilai negatif | Konsisten PRD: ganda tidak diputuskan otomatis; keduanya disimpan per ujian |
 | D-09 | Formula nilai | Rumus PRD §9 dengan bobot **eksplisit per ujian** (tanpa default tersembunyi; antarmuka mengisi usulan 0,7/0,3 yang harus dikonfirmasi); PG-saja/esai-saja = bobot 1; `numeric`; bulatkan **sekali** di nilai akhir ke 2 desimal (setengah menjauhi nol) | Hindari galat float (84,005 → 84,0 di float). Pembulatan ke bilangan bulat untuk rapor ditentukan sekolah di luar sistem atau sebagai opsi tampilan |
@@ -41,6 +74,7 @@ Keputusan D-01..D-15 berasal dari `docs/prd/11-OPEN-DECISIONS.md`; D-16..D-22 di
 | D-20 | **Baru:** perangkat operator dan scanner | **Perlu data dari Anda**: model scanner (ADF? dpi), spesifikasi laptop/tablet, browser | Uji kinerja S1 dilakukan pada perangkat ini |
 | D-21 | **Baru:** simpan teks/gambar soal? | **Tidak di MVP**; hanya nomor, tipe, skor, jumlah opsi, kunci | Mengurangi cakupan dan data; analisis butir tetap bisa berjalan |
 | D-22 | **Baru:** penyetuju gerbang | **Anda (pemilik proyek)** sebagai penyetuju tunggal, kecuali Anda menunjuk lain | Mengikuti pola FTS |
+| D-23 | **Baru (dari pilihan ponsel):** foto asli diperkecil sebelum diunggah | **Ya**: unggah salinan ≤ 2.000 px (≈ ≤ 0,5 MB), foto mentah disimpan di perangkat operator sampai nilai final; hash keduanya dicatat | Foto mentah 12 MP memakai 1,35–3 GB per ujian (150 siswa × 3–4 hal.); menyimpang dari "simpan gambar asli" PRD, sehingga perlu persetujuan eksplisit Anda |
 
 ## C. Syarat Gerbang 1 (PRD dan lingkup)
 

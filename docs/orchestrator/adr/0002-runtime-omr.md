@@ -78,3 +78,14 @@ mengubah skema, RLS, atau UI validasi.
 1. Spike S1 lulus gate di `docs/omr-spike-plan.md` untuk jalur scanner (dan terpisah untuk foto ponsel bila diinginkan).
 2. Lisensi pustaka apa pun yang ditambahkan diverifikasi dan dicatat.
 3. Pemilik proyek menyetujui ambang awal `omr_profiles`.
+
+## Addendum 2026-10-18: sumber foto ponsel dan cadangan
+
+- Pemilik memilih **foto ponsel** sebagai sumber utama dengan tenggat < 1 bulan. Ini menaikkan risiko pengukuran
+  (perspektif, cahaya, blur) tetapi tidak mengubah keputusan arsitektur: pengukuran di klien, klasifikasi di DB.
+- Pengukuran dilakukan dari **resolusi penuh**; yang diunggah adalah **salinan bukti diperkecil** (D-23) karena kuota
+  storage; foto mentah tetap di perangkat operator sampai finalisasi.
+- Template punya varian **mode ponsel** (penanda 15 mm, gelembung Ø 6 mm, ≤ 40 soal/halaman); lihat
+  `omr-template-spec.md` §8.
+- **Cadangan:** bila gate ponsel gagal di spike, dipakai scanner atau mode input manual (UI review yang sama);
+  lihat `omr-spike-plan.md` §7. Urutan pembangunan memajukan UI review sebelum OMR produksi agar cadangan selalu tersedia.

@@ -69,8 +69,9 @@ tidak memakai ambang mutlak yang sama. Metrik kualitas per halaman: `marker_resi
 | Pelurusan otomatis | boleh mati; aplikasi menangani kemiringan | Hindari transformasi ganda |
 | Penamaan | bebas; sistem memakai hash | Tidak memuat nama siswa |
 
-Foto ponsel **tidak didukung di MVP** kecuali spike terpisah lulus (pencahayaan, perspektif, blur). Bila diuji: kertas
-datar di latar kontras, cahaya merata tanpa bayangan, keempat penanda terlihat, ≥ 8 MP, tegak lurus.
+Pemilik proyek memilih **foto ponsel** sebagai sumber utama (2026-10-18); scanner menjadi cadangan. Ketentuan
+khusus ponsel (template, pemotretan, ukuran berkas) ada di §8, dan harus lulus gate ponsel di
+`omr-spike-plan.md` sebelum dipakai untuk data nyata.
 
 ## 6. Kegagalan yang harus dikenali (`failure_code`)
 
@@ -83,3 +84,44 @@ datar di latar kontras, cahaya merata tanpa bayangan, keempat penanda terlihat, 
 
 `sheet_templates(code, version)` unik. Perubahan geometri, jumlah soal, atau blok kode = versi baru. `omr_profiles`
 mengacu ke template yang dikalibrasi. Ujian menyimpan kedua ID; pengukuran menyimpan keduanya plus `algorithm_version`.
+
+## 8. Mode foto ponsel (pilihan pemilik; berisiko lebih tinggi dari scanner)
+
+Foto ponsel menambah perspektif, bayangan, blur, distorsi lensa, dan variasi cahaya. Karena itu template punya
+varian **mode ponsel** (ditandai pada kode template) dengan elemen lebih besar. Semua angka adalah titik awal yang
+harus dibuktikan pada cetakan uji; bila tidak muat, turunkan jumlah soal per halaman.
+
+### 8.1 Geometri varian ponsel (usulan)
+
+| Elemen | Mode scanner (§2) | Mode ponsel |
+|---|---|---|
+| Penanda sudut | 10×10 mm, pusat 12 mm dari tepi | **15×15 mm**, pusat 14 mm dari tepi; margin putih ≥ 5 mm di sekelilingnya |
+| Gelembung | Ø 4,5 mm | **Ø 6 mm** (area ukur tetap ≤ 60% jari-jari) |
+| Jarak gelembung | 7 × 6,5 mm | **9 × 8 mm** |
+| Soal per halaman | ≤ 50 | **≤ 40** (2 kolom × 20 baris); lebih dari itu → halaman PG kedua dengan kode halaman |
+| Blok kode peserta/ujian | Ø 4,5 mm | Ø 6 mm, jarak 9 × 6,5 mm |
+
+### 8.2 SOP pemotretan (wajib, dicetak dan ditempel di meja pemotretan)
+
+- **Meja pemotretan standar:** penyangga/tripod ponsel ±30–40 cm di atas kertas, alas gelap polos, cahaya merata dari atas atau dua sisi,
+  tanpa bayangan tangan/ponsel, **tanpa flash** (pantulan). Satu pengaturan tetap jauh lebih dapat diuji daripada pemotretan bebas.
+- Kamera tegak lurus; keempat penanda dan margin ≥ 5% tampak penuh; tunggu fokus tajam; satu halaman = satu foto.
+- Matikan HDR, filter kecantikan, dan "peningkatan dokumen" otomatis (bisa menghapus isian pensil tipis); mode foto biasa, resolusi 12 MP atau lebih.
+- **Format JPEG.** iPhone menyimpan HEIC secara bawaan dan browser desktop umumnya tidak membukanya: atur kamera ke
+  format paling kompatibel (JPEG). Verifikasi pada perangkat nyata di S1.
+- Pindahkan ke laptop dengan kabel atau penyimpanan awan; **hindari aplikasi pesan yang mengompres foto** (kirim sebagai
+  berkas/dokumen). Kompresi tambahan menurunkan akurasi dan tidak dapat dibatalkan.
+- Perkiraan beban kerja (hitungan kasar, belum diukur): 150 siswa × 3–4 foto ≈ 450–600 foto ≈ 2–3,3 jam pada 15–20 detik per foto.
+
+### 8.3 Pengolahan di klien
+
+1. Dekode foto resolusi penuh (perhatikan orientasi EXIF) di Web Worker; **ukur dari resolusi penuh**.
+2. Umpan balik instan: foto buram, penanda tidak lengkap, atau kontras rendah ditolak saat itu juga dengan alasan
+   (`failure_code`), agar dipotret ulang selagi kertas masih di meja.
+3. Setelah pengukuran sukses, buat **salinan bukti**: sisi panjang ≤ 2.000 px, JPEG kualitas ±80 (target ≤ 0,5 MB,
+   diukur di S1). **Yang diunggah ke storage adalah salinan ini.** Foto mentah 12 MP (±3–5 MB) akan memakai 1,35–3 GB
+   per ujian pada skala 150 siswa × 3–4 halaman, melebihi 1 GB storage Free.
+4. Catat `file_hash` foto asli dan hash salinan; foto asli tetap berada di perangkat operator sampai nilai difinalisasi (SOP).
+   Ini penyimpangan terkontrol dari "simpan gambar asli" (PRD OMR §5) demi kuota; menunggu persetujuan (D-23).
+5. Mode dua perangkat (ponsel hanya mengunggah, laptop mengukur antrean `uploaded`) didukung kontrak RPC tetapi
+   **tidak masuk pilot**.

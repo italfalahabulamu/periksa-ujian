@@ -6,6 +6,38 @@ L ≈ 1–2 minggu untuk satu pengembang. Roadmap PRD (`docs/prd/10-ROADMAP.md`)
 di bawah tidak mengubah itu secara material, kecuali paralelisasi spike OMR yang dapat menghemat sekitar satu minggu
 **bila D-05..D-07 dijawab lebih awal**. Kapasitas tim dan tanggal ujian (D-16) belum diketahui.
 
+## 0. Jalur pilot ramping (ujian pertama < 1 bulan)
+
+Berdasar jawaban pemilik 2026-10-18: ±150 siswa, PG + esai, foto ponsel, Supabase Free (`decisions.md` §0).
+Prinsip: **pangkas luasnya fitur, bukan keamanan dan audit.**
+
+**Masuk pilot:** login dan 4 peran (admin, guru, pemeriksa, operator); data akademik minimal dengan impor CSV
+sederhana untuk ±150 siswa; ujian, peserta + kode bercek-digit, soal PG dengan kunci beku, rubrik esai beku,
+`grading_config`; template **mode ponsel**; unggah foto yang diperkecil + hash + pengukuran OMR + klasifikasi di DB;
+**UI review (sekaligus mode input manual cadangan)**; penilaian esai di layar; hitung nilai; finalisasi dan `reopen_exam`;
+audit dan snapshot; ekspor CSV; purge scan terjadwal; RLS dengan tes T-01..T-20 penuh; `keepalive`; cadangan data.
+
+**Ditunda:** XLSX resmi, rekap lanjutan/antarkelas, analisis butir, `amend_final_score` (sementara lewat reopen),
+QR per siswa, esai buta, ujian susulan, penugasan per kelompok soal, dashboard lanjutan, mode dua perangkat.
+
+**Tidak boleh dipangkas:** tes "harus ditolak" RLS, audit append-only, versi beku kunci/rubrik/konfigurasi, tes formula,
+telaah keamanan sebelum data nyata, dan telaah hukum D-17 sebelum data siswa nyata. Sampai itu selesai pilot memakai data fiktif.
+
+**Urutan yang diubah:** UI review dibangun **sebelum** OMR produksi (M5 mendahului M4), sehingga bila OMR ponsel
+tidak lulus, operator tetap bisa memeriksa dengan input manual (`omr-spike-plan.md` §7).
+
+| Minggu (indikatif) | Isi | Titik keputusan |
+|---|---|---|
+| 1 | Penegasan G1/G2; audit FTS/HRIS ringkas (A-01); M0; **spike S1 jalur ponsel** (cetak template uji, kumpulkan lembar fiktif, generator sintetis, pengukuran JS) | Akhir hari ke-4 spike: gate ponsel (lulus / scanner / input manual) |
+| 2 | M1 minimal; M2 (ujian, kunci beku, rubrik, `mark_exam_ready`); M3 (unggah + perkecil + hash + kebijakan storage) | — |
+| 3 | M5 (UI review/input manual); M4 (OMR produksi bila lulus); M6 (esai) | Bila M5/M6 tertinggal: pemotongan darurat harus Anda setujui (mis. skor esai per soal, bukan per kriteria) |
+| 4 | M7 (hitung, finalisasi, ekspor); M8 (tes RLS penuh, review keamanan, latihan restore, uji coba kering dengan data fiktif, panduan singkat) | **Go/no-go** pemakaian pada ujian pertama |
+
+**Kejujuran jadwal:** rencana 4 minggu ini tanpa cadangan waktu, mengandaikan pengembangan berkelanjutan dan
+keputusan cepat; kapasitas tim belum diketahui. Risiko terbesar: OMR dari foto ponsel dan penyiapan Supabase.
+Karena itu tetapkan **tanggal cadangan**: bila go/no-go minggu ke-4 gagal, ujian pertama diperiksa dengan cara
+sekarang dan aplikasi dipakai untuk ujian berikutnya. Keputusan ini tidak mengurangi kewajiban kualitas di atas.
+
 ## 1. Gerbang
 
 | Gerbang | Isi | Keluaran | Status |

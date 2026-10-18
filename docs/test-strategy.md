@@ -19,7 +19,8 @@ Melengkapi `docs/prd/09-TEST-PLAN.md` (AC-01..AC-07). Prinsip: **tes ke Postgres
 ## 2. Aset tes yang dibangun lebih dulu
 
 1. **Generator lembar sintetis** (dari `sheet_templates.layout`): menghasilkan gambar dengan isian acak yang
-   kebenarannya diketahui, dengan derau, rotasi, skala, kontras, dan cacat (penanda terpotong, isian ganda,
+   kebenarannya diketahui, dengan derau, rotasi, skala, kontras, **perspektif, bayangan bergradasi, blur, distorsi lensa ringan (mode ponsel)**,
+   dan cacat (penanda terpotong, isian ganda,
    hapusan). Dipakai oleh tes unit OMR, tes lintas-browser, dan E2E (tanpa data nyata).
 2. **Fixture akademik fiktif**: 1 tahun ajaran, 3 kelas, 90 siswa, 3 mapel, 5 pengguna per peran.
 3. **Tabel kasus formula** (lihat §3) sebagai data uji bersama untuk tes DB dan tes UI.

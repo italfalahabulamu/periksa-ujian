@@ -1,8 +1,9 @@
 # Rencana spike S1: bukti kelayakan OMR
 
 Tujuan: memutuskan ADR-0002 (JS murni vs OpenCV.js vs worker Python) dengan **data**, dan mengkalibrasi
-`omr_profiles` awal. Batas waktu usulan: **5 hari kerja**, setelah D-05 sampai D-07 terjawab dan sampel kertas/scan
-tersedia. Spike menghasilkan kode prototipe di cabang terpisah dan laporan; kode spike bukan kode produksi.
+`omr_profiles` awal. Batas waktu usulan: **4 hari kerja** (dipadatkan karena ujian pertama < 1 bulan; kalibrasi
+bisa kurang matang, risiko dicatat), setelah cetakan template uji dan lembar isian fiktif tersedia. D-05 sampai D-07
+sudah dijawab (template baru, kode peserta berdigit pemeriksa) dan **jalur utama adalah foto ponsel**. Spike menghasilkan kode prototipe di cabang terpisah dan laporan; kode spike bukan kode produksi.
 
 ## 1. Prasyarat
 
@@ -18,7 +19,7 @@ tersedia. Spike menghasilkan kode prototipe di cabang terpisah dan laporan; kode
 | Scanner, isian wajar | **60 lembar** (≈ 3.000 respons bila 50 soal) | variasi pensil 2B/HB, pulpen, isian tipis/tebal |
 | Scanner, kasus sulit | 30 lembar | hapusan tidak bersih, ganda, coretan, kosong, arsir kasar, tanda silang, lipatan/noda ringan |
 | Scanner, kondisi teknis | 20 lembar | miring ≤ 5°, resolusi 100/150/200/300 dpi, kontras berbeda |
-| Foto ponsel (opsional, terpisah) | 60 lembar | cahaya tak merata, perspektif, blur ringan |
+| **Foto ponsel (jalur utama, dipilih pemilik)** | **≥ 1.000 respons** = 1.000 ÷ soal per lembar (mis. 34 lembar bila 30 soal); dianjurkan ≥ 60 lembar | meja pemotretan standar **dan** kondisi buruk: cahaya tak merata, miring, blur ringan; ponsel yang benar-benar akan dipakai (Android/iPhone, format JPEG) |
 | Sintetis | 300+ | dibangkitkan program dari `layout` (derau, rotasi, skala, isian acak dengan kebenaran diketahui) |
 
 **Kebenaran dasar (ground truth):** dua orang membaca setiap lembar nyata secara independen; selisih diputuskan
@@ -54,16 +55,16 @@ Alasan 60 lembar: tanpa satu pun kesalahan "yakin tetapi salah" pada n respons, 
 
 ## 5. Gate (hipotesis awal untuk dibahas; keputusan akhir di D-13)
 
-| Metrik | Jalur scanner | Jalur foto ponsel (bila diuji) |
+| Metrik | Jalur scanner (cadangan) | Jalur foto ponsel (utama) |
 |---|---|---|
-| FA | ≤ 0,1% (batas atas 95%, n ≥ 3.000) | ≤ 0,3% |
+| FA | ≤ 0,1% (batas atas 95%, n ≥ 3.000) | ≤ 0,3% (batas atas 95%, n ≥ 1.000, aturan tiga) |
 | Tingkat review | ≤ 10% | ≤ 20% |
 | Kegagalan lembar | ≤ 2% | ≤ 8% |
 | Salah kait peserta | 0 dari 60 | 0 dari 60 |
 | Waktu per lembar P95 | ≤ 5 detik pada laptop acuan | ≤ 8 detik |
 
 Angka-angka ini **usulan awal**, bukan standar. Pemilik proyek dan tim akademik menetapkan toleransi risiko
-(PRD OMR §7). Jika scanner lulus tetapi foto ponsel gagal, MVP dirilis dengan scanner saja.
+(PRD OMR §7). Jika foto ponsel gagal sedangkan scanner lulus, ujian pertama memakai scanner (pinjam/cari akses) atau mode input manual (§7).
 
 ## 6. Keluaran keputusan
 
@@ -71,3 +72,17 @@ Angka-angka ini **usulan awal**, bukan standar. Pemilik proyek dan tim akademik 
 2. Tetapkan `omr_profiles` v1 + dokumen kalibrasi (dataset, tanggal, perangkat).
 3. Perbarui `omr-template-spec.md` dengan geometri yang terbukti.
 4. Daftar risiko sisa dan syarat pilot terbatas (satu ujian, jumlah peserta yang ditetapkan di D-12).
+
+## 7. Titik putus dan cadangan (tenggat < 1 bulan)
+
+Keputusan diambil di **akhir hari ke-4 spike**, berdasarkan angka §5, bukan perasaan:
+
+| Hasil | Tindakan |
+|---|---|
+| Ponsel lulus gate | Lanjut M4 dengan ponsel (SOP §8 template spec wajib diterapkan) |
+| Ponsel gagal, scanner lulus | Ujian pertama memakai scanner (cari akses, atau pindai di tempat lain); ponsel diuji ulang setelah perbaikan |
+| Keduanya gagal | **Mode input manual**: UI review yang sama, semua soal berstatus `pending`, operator mengetik A–E/kosong per soal dengan gambar di sampingnya; OMR ditunda sampai setelah ujian pertama |
+
+Mode input manual tetap memakai versi kunci, audit, snapshot, dan guard finalisasi; yang dilewati hanya pengukuran
+otomatis. Kecepatannya harus diukur (jangan dijanjikan). Aturan yang **tidak boleh** dilanggar saat terdesak: respons
+ambigu/ganda/tidak terbaca tetap ke manusia; tidak ada jalan pintas yang memfinalisasi otomatis.
