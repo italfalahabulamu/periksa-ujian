@@ -9,7 +9,7 @@ Aplikasi mobile untuk sekolah dengan dua fungsi: **Koreksi Jawaban** (foto LJK p
 ## Isi repo
 - `docs/PROJECT_STATE.md`: posisi proyek, keputusan, asumsi, langkah berikutnya.
 - `docs/11-rnd/`: temuan riset dan spike. `docs/12-finance/`: model biaya. `docs/13-business/`: ringkasan bisnis.
-- `docs/01-product/`: PRD (Fase 2).
+- `docs/01-product/PRD.md`: PRD draf v0.1 (Fase 2, menunggu Gerbang 2).
 - `spikes/`: kode prototipe sekali pakai (bukan fondasi produksi).
 
 ## Rahasia
