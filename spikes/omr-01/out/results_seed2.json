@@ -1,0 +1,111 @@
+{
+ "A_mudah": {
+  "stats": {
+   "sheets": 40,
+   "questions": 1600,
+   "ok": 1458,
+   "clean_q": 1336,
+   "clean_flag": 49,
+   "flag": 142
+  },
+  "bycat": {
+   "clean": {
+    "ok": 1286
+   },
+   "partial": {
+    "ok": 51,
+    "flag": 28
+   },
+   "double": {
+    "ok": 67
+   },
+   "clean_ghost": {
+    "flag": 49,
+    "ok": 1
+   },
+   "faint": {
+    "flag": 44
+   },
+   "blank": {
+    "flag": 21,
+    "ok": 53
+   }
+  },
+  "silent_examples": [],
+  "jpeg_kb_mean": 526,
+  "read_ms_mean": 2889
+ },
+ "B_sedang": {
+  "stats": {
+   "sheets": 40,
+   "questions": 1600,
+   "ok": 1431,
+   "clean_q": 1313,
+   "clean_flag": 57,
+   "flag": 169
+  },
+  "bycat": {
+   "clean": {
+    "ok": 1256
+   },
+   "double": {
+    "ok": 76
+   },
+   "blank": {
+    "ok": 56,
+    "flag": 33
+   },
+   "partial": {
+    "ok": 43,
+    "flag": 28
+   },
+   "faint": {
+    "flag": 51
+   },
+   "clean_ghost": {
+    "flag": 57
+   }
+  },
+  "silent_examples": [],
+  "jpeg_kb_mean": 454,
+  "read_ms_mean": 2623
+ },
+ "C_berat": {
+  "stats": {
+   "sheets": 40,
+   "questions": 1400,
+   "ok": 1245,
+   "clean_q": 1125,
+   "clean_flag": 49,
+   "flag": 155,
+   "sheets_unreadable": 5
+  },
+  "bycat": {
+   "clean": {
+    "ok": 1072,
+    "flag": 1
+   },
+   "double": {
+    "ok": 72
+   },
+   "faint": {
+    "flag": 44
+   },
+   "partial": {
+    "ok": 51,
+    "flag": 43
+   },
+   "clean_ghost": {
+    "flag": 48,
+    "ok": 4
+   },
+   "blank": {
+    "ok": 46,
+    "flag": 19
+   }
+  },
+  "silent_examples": [],
+  "jpeg_kb_mean": 467,
+  "read_ms_mean": 2216
+ }
+}

@@ -1,0 +1,34 @@
+seed=1 sheets/condition=20
+
+[A_mudah] sheets=20 unreadable=0 questions=800 jpeg~526KB read~2430ms
+  silent errors: 0/800 = 0.00%  (95% upper bound 0.48%)
+  flag on clean answers (false alarm): 35/631 = 5.55%
+  flagged overall: 93/800 = 11.62%
+    blank        {'ok': 32, 'flag': 15}
+    clean        {'ok': 595}
+    clean_ghost  {'flag': 35, 'ok': 1}
+    double       {'ok': 49}
+    faint        {'flag': 20}
+    partial      {'flag': 23, 'ok': 30}
+
+[B_sedang] sheets=20 unreadable=0 questions=800 jpeg~454KB read~2372ms
+  silent errors: 0/800 = 0.00%  (95% upper bound 0.48%)
+  flag on clean answers (false alarm): 43/669 = 6.43%
+  flagged overall: 93/800 = 11.62%
+    blank        {'ok': 22, 'flag': 11}
+    clean        {'ok': 624}
+    clean_ghost  {'flag': 43, 'ok': 2}
+    double       {'ok': 34}
+    faint        {'flag': 20}
+    partial      {'ok': 25, 'flag': 19}
+
+[C_berat] sheets=20 unreadable=2 questions=720 jpeg~468KB read~2284ms
+  silent errors: 0/720 = 0.00%  (95% upper bound 0.53%)
+  flag on clean answers (false alarm): 29/605 = 4.79%
+  flagged overall: 70/720 = 9.72%
+    blank        {'ok': 21, 'flag': 6}
+    clean        {'ok': 572}
+    clean_ghost  {'flag': 29, 'ok': 4}
+    double       {'ok': 36}
+    faint        {'flag': 21}
+    partial      {'ok': 17, 'flag': 14}

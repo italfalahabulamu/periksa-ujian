@@ -1,6 +1,6 @@
 # Spike 01: Akurasi pembacaan LJK dari foto ponsel
 
-**Status:** RENCANA (belum dijalankan). Hasil spike ini dibuang setelah dipakai belajar; bukan fondasi produksi kecuali Technical Lead menyetujui.
+**Status:** dijalankan sebagian pada data sintetis (2026-11-01). Hasil: `spike-01-hasil.md`. Foto nyata belum. Hasil spike ini dibuang setelah dipakai belajar; bukan fondasi produksi kecuali Technical Lead menyetujui.
 
 ## Pertanyaan
 Dengan template LJK buatan kita (marka sudut + bulatan jawaban), seberapa akurat foto ponsel biasa dibaca, dan seberapa sering sistem harus meminta guru memeriksa ulang?
