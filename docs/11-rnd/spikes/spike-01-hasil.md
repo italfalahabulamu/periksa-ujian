@@ -45,7 +45,7 @@ Waktu baca ± 2,2-2,9 detik per lembar di Python pada mesin sesi ini (bukan ukur
    Pelajaran untuk produksi: tambahkan fitur non-periodik (mis. kode lembar atau marka tambahan di sisi) agar pergeseran satu bulatan terdeteksi.
 3. **Salah arah sendiri:** sempat mengetatkan filter bentuk marka sehingga marka yang kabur ikut gugur (kondisi C hampir semua gagal).
    Dikembalikan.
-4. **Isian sebagian yang tipis dibaca kosong.** Pada llintasan pertama (10 lembar per kondisi, ambang ragu 0,22) ada 8 salah baca tak ditandai
+4. **Isian sebagian yang tipis dibaca kosong.** Pada lintasan pertama (10 lembar per kondisi, ambang ragu 0,22) ada 8 salah baca tak ditandai
    dari 1.160 soal (0,69%), semuanya isian sebagian dengan rasio isi 0,14-0,20. Ambang ragu diturunkan ke 0,12, tepat di atas semua
    bulatan kosong di set kalibrasi (maks 0,09). Konsekuensinya: bekas hapusan (0,12-0,23) ikut ditandai. Ini keputusan kebijakan:
    lebih baik guru memeriksa bekas hapusan daripada jawaban hilang diam-diam.
