@@ -19,6 +19,7 @@ Siswa dan orang tua tidak memakai aplikasi pada rilis ini.
 ## 3. Rilis
 | Rilis | Isi | Alasan urutan |
 |---|---|---|
+| **R0 (pilot 1 pekan)** | Irisan R1 yang dipotong agar muat sebelum ujian pertama: lihat `pilot-1-pekan.md`. Pilot dampingan, koreksi manual tetap berjalan paralel | Tenggat ujian pertama 1 pekan (jawaban user 2026-11-02) |
 | **R1 (MVP)** | Satu alur utuh pilihan ganda: data kelas, buat ujian, cetak LJK, foto, cek ulang, nilai, ekspor | Risiko terbesar (pembacaan foto) harus terbukti lebih dulu |
 | **R2** | Isian singkat dan Telaah Soal | Telaah soal butuh hasil ujian nyata dari R1 |
 | **R3** | Penyempurnaan (offline, saran AI, iOS) | Bergantung data pakai |
@@ -135,13 +136,13 @@ Pemakaian Telaah Soal (R2): persen ujian yang analisisnya dibuka.
 ## 9. Risiko dan pertanyaan terbuka
 | # | Pertanyaan/risiko | Siapa yang bisa menjawab |
 |---|---|---|
-| 1 | **Isian singkat bagaimana dimasukkan?** Tanpa OCR tulisan tangan, pilihan: (a) guru mengetik jawaban siswa di layar cepat lalu dinilai otomatis, atau (b) jawaban angka lewat grid bulatan di LJK. Rekomendasi: (a) untuk R2, (b) bila jawaban hanya angka | User (Gerbang 2) |
-| 2 | **Tenggat dan distribusi.** Bila ujian pertama masih sebelum ± 18 November 2026 (angka dari catatan repo lama, belum dikonfirmasi), uji tertutup Google Play (12 penguji x 14 hari berturut-turut) tidak muat; opsi distribusi APK langsung | User |
-| 3 | Sekolah mitra pilot siapa, dan berapa guru/ujian? | User |
+| 1 | ~~Isian singkat bagaimana dimasukkan?~~ **DIJAWAB 2026-11-02: guru mengetik jawaban siswa di layar (rekomendasi), masuk R2.** (pertanyaan lama:) Tanpa OCR tulisan tangan, pilihan: (a) guru mengetik jawaban siswa di layar cepat lalu dinilai otomatis, atau (b) jawaban angka lewat grid bulatan di LJK. Rekomendasi: (a) untuk R2, (b) bila jawaban hanya angka | User (Gerbang 2) |
+| 2 | **TENGGAT DIJAWAB: ujian pertama dalam 1 pekan (2026-11-02).** Distribusi lewat toko tidak mungkin; lihat `pilot-1-pekan.md` (usulan PWA, perlu persetujuan). (pertanyaan lama:) **Tenggat dan distribusi.** Bila ujian pertama masih sebelum ± 18 November 2026 (angka dari catatan repo lama, belum dikonfirmasi), uji tertutup Google Play (12 penguji x 14 hari berturut-turut) tidak muat; opsi distribusi APK langsung | User |
+| 3 | **DIJAWAB sebagian: mitra "Sekolah asrama A" (nama resmi belum disebut).** Masih perlu: jumlah guru/ujian, siswa, soal, ponsel (daftar di `pilot-1-pekan.md`) | User + sekolah |
 | 4 | Siapa pengendali data (sekolah atau kita) dan cara persetujuan orang tua | Penasihat hukum |
 | 5 | Lama simpan foto LJK (usulan 30 hari setelah final, keputusan sekolah) | Sekolah + hukum |
 | 6 | Akurasi pada foto nyata belum terbukti; spike 02 wajib sebelum R1 dikunci | R&D |
-| 7 | Siapa menanggung biaya jangka panjang dan tujuan akhirnya (gratis) | User |
+| 7 | **DIJAWAB: biaya jangka panjang ditanggung sekolah (2026-11-02).** Konsekuensi: "gratis" berarti gratis bagi guru; infrastruktur dibayar sekolah (lihat business-brief). Tujuan akhir proyek masih belum dinyatakan | User |
 | 8 | Jumlah soal tipikal per ujian (spike memakai 40 soal, A-E) | Guru mitra |
 | 9 | Proyek Supabase Free dijeda 7 hari tanpa aktivitas; perlu aktivitas terjadwal atau Pro menjelang ujian | DevOps |
 

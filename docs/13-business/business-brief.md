@@ -19,8 +19,9 @@
 "Untuk guru sekolah yang sudah mengoreksi LJK, aplikasi ini bukan hanya menghitung nilai tetapi juga memberi tahu soal mana yang bermasalah (kunci keliru, pengecoh tidak berfungsi, terlalu sulit atau mudah), sehingga ujian berikutnya lebih baik." Pembeda adalah modul Telaah Soal; ini **hipotesis** yang perlu diuji ke 5-10 guru sebelum dibangun penuh.
 
 ## Model bisnis dan keberlanjutan
-- Pendapatan: tidak ada (keputusan user). Maka tujuan perlu jelas: dampak sosial, portofolio, atau dasar untuk layanan berbayar nanti? **Pertanyaan terbuka untuk user.**
-- Konsekuensi: biaya ditanggung pemilik (lihat `docs/12-finance/opex-model.md`). Perlu batas pemakaian agar tidak membengkak.
+- Pendapatan dari guru: tidak ada (keputusan Gerbang 1: gratis). **Biaya jangka panjang ditanggung sekolah** (jawaban user 2026-11-02), jadi sekolah adalah pembayar infrastruktur dan guru adalah pengguna. Ini membedakan pengguna dan pembayar (lihat bagian Pelanggan).
+- Konsekuensi: sekolah perlu tahu perkiraan biayanya (Supabase Pro sekitar $25/bulan per organisasi bila Free tidak cukup; angka dari sumber pihak ketiga, **belum diverifikasi** ke halaman resmi) dan siapa yang memegang akun layanan (kepemilikan akun, cadangan, dan akses jika pengembang berhenti). Perlu batas pemakaian agar biaya tidak membengkak. Belum ada perjanjian layanan; perlu dibuat sebelum R1.
+- Tujuan akhir proyek bagi pemilik (dampak, portofolio, atau layanan berbayar nanti) belum dinyatakan.
 - Jalur masa depan yang tidak mengubah keputusan sekarang: paket institusi untuk dinas atau yayasan, atau fitur berkuota yang lebih tinggi.
 
 ## Go-to-market (pilot)
