@@ -8,8 +8,11 @@ html = html.replace('<meta name="theme-color" content="#0f766e">',
     '<meta name="theme-color" content="#0f766e">\n<link rel="manifest" href="manifest.webmanifest">\n<link rel="icon" href="icon-192.png">', 1)
 reg = "<script>if('serviceWorker' in navigator){addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}</script>\n</body>"
 assert html.count("</body>") == 1
+html = html.replace('<div id="app"></div>\n<script>', '<div id="app"></div>\n<script src="omr.js"></script>\n<script>', 1)
+assert 'src="omr.js"' in html
 html = html.replace("</body>", reg, 1)
 (out / "index.html").write_text(html, encoding="utf-8")
+(out / "omr.js").write_text((pathlib.Path(__file__).resolve().parent / "omr.js").read_text(encoding="utf-8"), encoding="utf-8")
 for n in (192, 512):
     im = Image.new("RGB", (n, n), "#0f766e"); d = ImageDraw.Draw(im)
     d.rounded_rectangle([n*.22, n*.18, n*.78, n*.82], n*.05, fill="white")
@@ -22,9 +25,9 @@ for n in (192, 512):
     "display": "standalone", "background_color": "#ffffff", "theme_color": "#0f766e", "lang": "id",
     "icons": [{"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
               {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}]}, indent=1))
-ver = hashlib.sha256(html.encode()).hexdigest()[:12]
+ver = hashlib.sha256((html + (out / 'omr.js').read_text()).encode()).hexdigest()[:12]
 (out / "sw.js").write_text(f"""const V='pu-{ver}';
-const FILES=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png'];
+const FILES=['./','index.html','omr.js','manifest.webmanifest','icon-192.png','icon-512.png'];
 self.addEventListener('install',e=>{{e.waitUntil(caches.open(V).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting()));}});
 self.addEventListener('activate',e=>{{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim()));}});
 self.addEventListener('fetch',e=>{{if(e.request.method!=='GET')return;e.respondWith(caches.match(e.request,{{ignoreSearch:true}}).then(r=>r||fetch(e.request)));}});

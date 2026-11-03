@@ -272,10 +272,31 @@ function vPindai(ex,flash){
  const file=h('input',{type:'file',id:'scan-file',accept:'image/*'});
  const prev=h('div',{id:'scan-prev'});const msg=h('div',{id:'scan-msg',role:'status',class:flash&&flash.bad?'err':''},flash?flash.text:'');
  file.addEventListener('change',()=>{prev.replaceChildren();if(file.files[0])prev.append(h('img',{src:URL.createObjectURL(file.files[0]),alt:'Pratinjau foto',style:'max-width:100%;max-height:220px;border-radius:10px;margin-top:8px'}));});
+ const REAL=typeof window.OMR!=='undefined';
+ const camIn=REAL?h('input',{type:'file',id:'scan-cam',accept:'image/*',capture:'environment'}):null;
+ const pick=()=>(camIn&&camIn.files[0])||file.files[0];
+ const showPrev=f=>{prev.replaceChildren();if(f)prev.append(h('img',{src:URL.createObjectURL(f),alt:'Pratinjau foto',style:'max-width:100%;max-height:220px;border-radius:10px;margin-top:8px'}));};
+ if(camIn)camIn.addEventListener('change',()=>{if(camIn.files[0]){file.value='';showPrev(camIn.files[0]);}});
+ if(camIn)file.addEventListener('change',()=>{if(file.files[0]){camIn.value='';}});
+ const apply=(kode,r)=>{
+  if(!r.ok){ex.sheets[kode]={state:'ditolak',alasan:r.reason+'. Foto ulang dengan keempat sudut masuk bingkai, cahaya rata, kertas rata.'};save();
+   vPindai(ex,{bad:true,text:'Foto '+kode+' ditolak: '+ex.sheets[kode].alasan});return;}
+  ex.sheets[kode]={state:'terbaca',reg:+r.reg.toFixed(3),q:r.questions.map(q=>({fills:q.fills.map(v=>+v.toFixed(2)),status:q.status,answer:q.answer}))};save();
+  toast('Lembar '+kode+' dibaca.');vPindai(ex);};
+ const readReal=async(kode,f)=>{
+  msg.className='';msg.textContent='Membaca foto...';
+  try{const bmp=await createImageBitmap(f);const sc=Math.min(1,2400/Math.max(bmp.width,bmp.height)),w=Math.round(bmp.width*sc),hh=Math.round(bmp.height*sc);
+   const cv=document.createElement('canvas');cv.width=w;cv.height=hh;const cx=cv.getContext('2d',{willReadFrequently:true});cx.drawImage(bmp,0,0,w,hh);
+   const id=cx.getImageData(0,0,w,hh);await new Promise(r=>setTimeout(r,30));
+   apply(kode,window.OMR.readSheet(window.OMR.toGray(id.data,w,hh,99999),{n:ex.n}));}
+  catch(e){msg.className='err';msg.textContent='Foto tidak bisa dibuka: '+(e&&e.message||e);}};
  const run=()=>{
   if(!sel.value){msg.textContent='Semua lembar sudah dibaca.';return;}
-  if(!file.files[0]){msg.className='err';msg.textContent='Pilih atau ambil foto LJK dulu.';return;}
-  const n=++S.seq,kode=sel.value;
+  const f=pick();
+  if(!f){msg.className='err';msg.textContent='Pilih atau ambil foto LJK dulu.';return;}
+  const kode=sel.value;
+  if(REAL){readReal(kode,f);return;}
+  const n=++S.seq;
   if(n%4===0){ex.sheets[kode]={state:'ditolak',alasan:'Marka sudut ke-2 tidak terlihat. Foto ulang dengan keempat sudut masuk bingkai.'};save();
    vPindai(ex,{bad:true,text:'Foto '+kode+' ditolak (simulasi): '+ex.sheets[kode].alasan});return;}
   ex.sheets[kode]={state:'terbaca',q:genSheet(rng(7000+n),ex.key,0.4+0.5*rng(9000+n)())};save();
@@ -283,9 +304,9 @@ function vPindai(ex,flash){
  const chipOf=r=>r.state==='belum'?h('span',{class:'chip'},'belum'):r.state==='ditolak'?h('span',{class:'chip bad'},'foto ulang'):r.state==='cek'?h('span',{class:'chip warn'},r.pend+' perlu cek'):h('span',{class:'chip ok'},'dibaca');
  layout(ex.judul,'#/',tabs(ex,'pindai'),
   h('div',{class:'card'},h('h3',{},'Pindai lembar'),
-   h('p',{class:'muted'},'SIMULASI: foto yang dipilih tidak dibaca. Hasil bacaan contoh dibuat otomatis. Pembaca foto sungguhan belum ada di prototipe ini.'),
-   h('label',{for:'scan-siswa'},'Siswa'),sel,h('label',{for:'scan-file'},'Foto LJK'),file,prev,
-   h('div',{style:'margin-top:10px'},h('button',{class:'btn pri',id:'scan-run',onclick:run},'Baca (simulasi)')),msg),
+   REAL?h('p',{class:'muted'},'Pembaca foto aktif. Akurasinya BELUM teruji pada foto nyata: periksa hasil, dan tanda ragu/ganda wajib dicek guru.'):h('p',{class:'muted'},'SIMULASI: foto yang dipilih tidak dibaca. Hasil bacaan contoh dibuat otomatis. Pembaca foto sungguhan belum ada di prototipe ini.'),
+   h('label',{for:'scan-siswa'},'Siswa'),sel,camIn?h('label',{for:'scan-cam'},'Ambil foto (kamera)'):null,camIn,h('label',{for:'scan-file'},camIn?'Atau pilih dari galeri':'Foto LJK'),file,prev,
+   h('div',{style:'margin-top:10px'},h('button',{class:'btn pri',id:'scan-run',onclick:run},REAL?'Baca foto':'Baca (simulasi)')),msg),
   h('div',{class:'card'},h('h3',{},'Status lembar'),h('table',{},h('tbody',{},kl.siswa.map(c=>h('tr',{},h('td',{},c),h('td',{style:'text-align:right'},chipOf(result(ex,c)))))))));}
 
 function bubbleView(fills){

@@ -144,9 +144,9 @@
       if (!(r > 0.5 && r < 1.9)) return false; }
     return true;
   }
-  function registrationScore(g, w, h, H, K) {
+  function registrationScore(g, w, h, H, K, nq) {
     const r = TPL.BUB_D / 2, vals = [];
-    for (let q = 0; q < TPL.N_Q; q++) for (let o = 0; o < 5; o++) {
+    for (let q = 0; q < nq; q++) for (let o = 0; o < 5; o++) {
       const [bx, by] = bubble(q, o), S = (pts) => pts.map(p => { const t = apply(H, p[0], p[1]); return sample(g, w, h, t[0], t[1]); });
       const P = median(S(disc(bx, by, 1.45 * r, 1.6 * r, 16, 2)));
       let ring = 1e9; for (const f of [0.85, 0.93, 1.0, 1.07, 1.15]) { const v = S(disc(bx, by, f * r, f * r, 16, 1)), mu = v.reduce((a, b) => a + b) / v.length; if (mu < ring) ring = mu; }
@@ -156,7 +156,7 @@
   }
 
   function readSheet(img, opts = {}) {
-    const { data: g, w, h } = img, regMin = opts.regMin == null ? REG_MIN : opts.regMin;
+    const { data: g, w, h } = img, nq = Math.min(TPL.N_Q, Math.max(1, opts.n || TPL.N_Q)), regMin = opts.regMin == null ? REG_MIN : opts.regMin;
     const sets = findMarkers(g, w, h);
     if (!sets) return { ok: false, reason: 'marka sudut tidak ditemukan' };
     const tpl = ORDER.map(k => [TPL.MARKERS[k][0], TPL.MARKERS[k][1]]);
@@ -164,7 +164,7 @@
     for (const { pts, areas } of sets.slice(0, 6)) {
       const H = homography(tpl, pts); if (!H || !sizesConsistent(H, areas)) continue;
       const blacks = [1, 2, 3].map(i => median(disc(tpl[i][0], tpl[i][1], 0, 1.8, 8, 3).map(p => { const t = apply(H, p[0], p[1]); return sample(g, w, h, t[0], t[1]); })));
-      const K = median(blacks), score = registrationScore(g, w, h, H, K);
+      const K = median(blacks), score = registrationScore(g, w, h, H, K, nq);
       if (!best) best = { score, H, K };
       if (score >= regMin) { best = { score, H, K }; break; }
     }
@@ -172,7 +172,7 @@
     if (best.score < regMin) return { ok: false, reason: 'pendaftaran gambar gagal (foto ulang)', reg: best.score };
     const { H, K } = best, r = TPL.BUB_D / 2, S = pts => pts.map(p => { const t = apply(H, p[0], p[1]); return sample(g, w, h, t[0], t[1]); });
     const questions = [];
-    for (let q = 0; q < TPL.N_Q; q++) {
+    for (let q = 0; q < nq; q++) {
       const fills = [];
       for (let o = 0; o < 5; o++) {
         const [bx, by] = bubble(q, o), inner = S(disc(bx, by, 0, 0.6 * r)), P = median(S(disc(bx, by, 1.35 * r, 1.55 * r, 16, 2)));

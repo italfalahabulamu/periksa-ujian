@@ -24,10 +24,11 @@ Aplikasi mobile untuk sekolah: (A) Koreksi Jawaban (pilihan ganda via foto LJK +
 
 - 2026-11-04: pembaca foto JS (app/pwa/omr.js) setara reader.py pada data sintetis; belum terhubung ke UI dan belum diuji pada foto nyata.
 
+- 2026-11-04: pembaca foto terhubung ke layar Pindai PWA (kamera + galeri); LJK aplikasi cocok dengan pembaca (uji e2e sintetis). Batas Supabase Free dikonfirmasi dari halaman resmi supabase.com/pricing: 500 MB DB, 1 GB file, dijeda setelah 1 minggu tanpa aktivitas, 2 proyek free aktif; Pro mulai $25/bulan.
+
 ## Asumsi yang belum dikonfirmasi
 - Target akurasi pindai (usulan di spike-01): salah baca tak ditandai <= 0,5%, ragu <= 5%.
 - Platform pertama Android; iOS ditunda.
-- Batas Supabase Free berasal dari sumber pihak ketiga, belum dicek ke halaman resmi.
 - Kepemilikan akun layanan (Supabase dll.) dan perjanjian layanan dengan sekolah belum dibahas.
 - Spike 01 hanya pada data sintetis; akurasi pada foto nyata belum terbukti (lihat docs/11-rnd/spikes/spike-01-hasil.md).
 - Tanggal ujian pasti, jumlah siswa/soal, jenis ponsel, dan izin memotret lembar siswa belum diterima dari sekolah (daftar di docs/01-product/pilot-1-pekan.md).
