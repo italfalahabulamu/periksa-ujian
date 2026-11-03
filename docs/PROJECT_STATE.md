@@ -32,7 +32,7 @@ Aplikasi mobile untuk sekolah: (A) Koreksi Jawaban (pilihan ganda via foto LJK +
 - Data sekolah (tanggal ujian, jumlah siswa dan soal, jenis ponsel, izin memotret lembar) belum diterima; pesan user 2026-11-03 hanya mengulang daftarnya.
 
 ## Versi kontrak
-belum dibekukan
+belum dibekukan (ADR-001 usulan di docs/02-architecture/; protokol spike 02 di docs/11-rnd/spikes/)
 
 ## Bug/temuan terbuka
 QA: P0=0 P1=0 P2=0 | Security: Critical=0 High=0
