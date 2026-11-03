@@ -20,3 +20,9 @@ Tujuan: mengukur salah baca tak ditandai dan foto ditolak pada lembar nyata. Amb
 ## Batasan
 - Bergantung pada izin sekolah memotret lembar siswa; gunakan lembar uji yang diisi guru/relawan, bukan lembar ujian siswa, bila izin belum ada.
 - Pembaca sebenarnya di browser belum ditulis; sementara dipakai `reader.py` pada foto yang sama.
+
+## Catatan 2026-11-04: pembaca JS (app/pwa/omr.js)
+Port JavaScript murni dari reader.py sudah ada dan diuji pada set sintetis baru (seed 3, 36 foto, 1.320 soal; `spikes/omr-01/make_set.py` + `app/pwa/test_omr.py`):
+- Salah baca tak ditandai: 0 dari 1.320 soal; ditandai ragu/ganda: 144 (sekitar 11%); 1 lembar kondisi berat ditolak.
+- Paritas dengan reader.py: 1.319 dari 1.320 soal sama. Waktu rata-rata 0,5 detik per foto di Chromium server.
+- **BELUM TERVERIFIKASI**: foto nyata, kecepatan di ponsel kelas menengah, dan integrasi ke antarmuka PWA (kamera + template LJK aplikasi memakai geometri yang sama dengan TPL di omr.js). Tanpa nol salah baca pada foto nyata, hasil ini hanya bukti bahwa port setara dengan versi Python.
