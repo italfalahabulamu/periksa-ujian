@@ -196,5 +196,5 @@
       g[y * W + x] = (rgba[i] * 299 + rgba[i + 1] * 587 + rgba[i + 2] * 114) / 1000; }
     return { data: g, w: W, h: H };
   }
-  root.OMR = { _find: findMarkers, _dbg: (g,w,h)=>{const b=blur5(g,w,h),m=inkMask(b,w,h),{stats}=components(m,w,h);return [...stats.values()].filter(s=>s.n>800&&s.n<60000).map(s=>[s.n,s.x1-s.x0+1,s.y1-s.y0+1])}, readSheet, toGray, TPL, T_HI, T_LO, REG_MIN };
+  root.OMR = { readSheet, toGray, TPL, T_HI, T_LO, REG_MIN };
 })(typeof window !== 'undefined' ? window : globalThis);
