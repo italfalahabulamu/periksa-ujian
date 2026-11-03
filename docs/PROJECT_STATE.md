@@ -16,6 +16,8 @@ Aplikasi mobile untuk sekolah: (A) Koreksi Jawaban (pilihan ganda via foto LJK +
 - Rilis: R0 = pilot 1 pekan (irisan R1); R1 = alur utuh pilihan ganda; R2 = isian singkat + Telaah Soal; R3 = offline, saran AI, iOS (usulan PM, menunggu Gerbang 2).
 - Cakupan MVP: pilihan ganda + isian singkat; esai dan tulisan tangan ditunda.
 
+- 2026-11-03: model aplikasi (mockup) Android dibuat di `app/` (lihat app/README.md); data tiruan; belum diuji di perangkat nyata.
+
 ## Asumsi yang belum dikonfirmasi
 - Target akurasi pindai (usulan di spike-01): salah baca tak ditandai <= 0,5%, ragu <= 5%.
 - Platform pertama Android; iOS ditunda.

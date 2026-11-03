@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>Periksa Ujian (Mock)</title>
+<style>
+:root{--bg:#f4f6f4;--card:#fff;--ink:#14211e;--mute:#566660;--line:#d9e1de;--brand:#0f766e;--brand-ink:#fff;
+--warn:#92400e;--warn-bg:#fef3c7;--bad:#b91c1c;--bad-bg:#fee2e2;--ok:#166534;--ok-bg:#dcfce7;--info:#1e40af;--info-bg:#dbeafe;--r:14px}
+@media (prefers-color-scheme:dark){:root{--bg:#0e1513;--card:#17211e;--ink:#e8efed;--mute:#9db0aa;--line:#2a3935;--brand:#2dd4bf;--brand-ink:#04211d;
+--warn:#fbbf24;--warn-bg:#3a2e0b;--bad:#fca5a5;--bad-bg:#3b1414;--ok:#86efac;--ok-bg:#12331f;--info:#93c5fd;--info-bg:#15264a}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header.top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--brand);color:var(--brand-ink)}
+header.top h1{flex:1;margin:0;font-size:18px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header.top a.back{color:inherit;text-decoration:none;font-size:28px;line-height:1;padding:0 6px 4px 0}
+.chip{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:600;background:var(--info-bg);color:var(--info);white-space:nowrap}
+.chip.mock{background:rgba(255,255,255,.2);color:inherit;letter-spacing:.04em}
+.chip.ok{background:var(--ok-bg);color:var(--ok)}.chip.warn{background:var(--warn-bg);color:var(--warn)}.chip.bad{background:var(--bad-bg);color:var(--bad)}
+main{max-width:720px;margin:0 auto;padding:16px 16px 40px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin:0 0 12px}
+.card h2,.card h3{margin:0 0 6px;font-size:16px}
+.muted{color:var(--mute);font-size:14px}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.row.sb{justify-content:space-between}
+.btn{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:10px 14px;border-radius:10px;font:inherit;font-weight:600;cursor:pointer;min-height:44px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.btn.pri{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.btn.sm{min-height:36px;padding:6px 10px;font-size:14px}
+.btn:disabled{opacity:.5}
+.btn.block{display:flex;width:100%}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin:0 0 12px;padding-bottom:2px}
+.tabs a{flex:1;text-align:center;padding:9px 8px;border-radius:10px;text-decoration:none;color:var(--ink);background:var(--card);border:1px solid var(--line);font-size:14px;font-weight:600;white-space:nowrap}
+.tabs a.on{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.tabs .n{background:var(--bad-bg);color:var(--bad);border-radius:99px;padding:0 7px;margin-left:4px;font-size:12px}
+label{display:block;font-weight:600;margin:10px 0 4px}
+input[type=text],select,textarea,input[type=number]{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line)}th{color:var(--mute);font-weight:600}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.keygrid{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;font-size:13px}
+.keygrid div{text-align:center;border:1px solid var(--line);border-radius:6px;padding:3px 0}.keygrid b{display:block;color:var(--mute);font-size:10px;font-weight:600}
+.keyrow{display:flex;align-items:center;gap:6px;margin:4px 0}.keyrow span{width:28px;color:var(--mute);font-size:14px}
+.keyrow button{flex:1;min-height:40px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;font:inherit;font-weight:700}
+.keyrow button.on{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.bubbles{display:flex;justify-content:space-between;gap:6px;margin:10px 0}
+.bub{flex:1;text-align:center;font-size:13px}.bub svg{width:100%;max-width:46px;height:auto;display:block;margin:0 auto 2px}
+.answers{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.stat{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 12px}.stat div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px;text-align:center}
+.stat b{display:block;font-size:20px;font-variant-numeric:tabular-nums}.stat span{font-size:12px;color:var(--mute)}
+.toast{position:fixed;left:16px;right:16px;bottom:20px;z-index:9;background:var(--ink);color:var(--bg);padding:12px 14px;border-radius:12px;text-align:center}
+.err{color:var(--bad);font-size:14px;margin:6px 0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.sheetwrap{overflow:auto;border:1px solid var(--line);background:#fff;max-height:60vh}
+.sheet{background:#fff;display:block;margin:0 auto 8px;width:100%;height:auto;aspect-ratio:210/297}
+@page{size:A4;margin:0}
+@media print{header.top,.noprint,.tabs{display:none!important}body{background:#fff}main{padding:0;max-width:none}.sheetwrap{border:0;max-height:none;overflow:visible}.sheet{width:210mm;height:297mm;page-break-after:always;margin:0}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+(()=>{'use strict';
+const KEY='pu_state_v1',OPTS=['A','B','C','D','E'],T_HI=0.45,T_LO=0.12;
+const $app=document.getElementById('app');
+const ANDROID=typeof window.AndroidBridge!=='undefined';
+
+/* ---------- util ---------- */
+/* WebView Android lama (sebelum 86) belum punya replaceChildren */
+if(!Element.prototype.replaceChildren){Element.prototype.replaceChildren=function(...n){while(this.firstChild)this.removeChild(this.firstChild);this.append(...n);};}
+function h(tag,props,...kids){const e=document.createElement(tag);
+ for(const[k,v]of Object.entries(props||{})){if(k==='class')e.className=v;else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);else if(v===true)e.setAttribute(k,'');else if(v!==false&&v!=null)e.setAttribute(k,v);}
+ for(const c of kids.flat(Infinity)){if(c==null||c===false)continue;e.append(c.nodeType?c:document.createTextNode(String(c)));}return e;}
+const NS='http://www.w3.org/2000/svg';
+function sv(tag,props,...kids){const e=document.createElementNS(NS,tag);
+ for(const[k,v]of Object.entries(props||{}))if(v!=null)e.setAttribute(k,v);
+ for(const c of kids.flat(Infinity)){if(c==null)continue;e.append(c.nodeType?c:document.createTextNode(String(c)));}return e;}
+function rng(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const fmt=c=>Math.floor(c/100)+','+String(c%100).padStart(2,'0');
+function toast(msg){const t=h('div',{class:'toast',role:'status'},msg);document.body.append(t);setTimeout(()=>t.remove(),2600);}
+
+/* ---------- domain (pure) ---------- */
+function classify(f){const marked=[],vague=[];
+ f.forEach((v,i)=>{if(v>=T_HI)marked.push(i);else if(v>=T_LO)vague.push(i);});
+ if(marked.length>=2)return{status:'multiple',answer:null};
+ if(marked.length===1&&!vague.length)return{status:'detected',answer:marked[0]};
+ if(!marked.length&&!vague.length)return{status:'blank',answer:null};
+ return{status:'ambiguous',answer:marked.length?marked[0]:null};}
+
+function genSheet(rand,key,ability){
+ const rr=(a,b)=>+(a+(b-a)*rand()).toFixed(2);
+ const other=k=>(k+1+Math.floor(rand()*4))%5;
+ return key.map(k=>{
+  const fills=[0,0,0,0,0].map(()=>+(rand()*0.03).toFixed(2));
+  const it=rand()<ability?k:other(k),u=rand();
+  if(u<0.86){if(rand()<0.6)fills[it]=rr(.74,.92);else fills[it]=rr(.52,.69);}
+  else if(u<0.88){fills[it]=rr(.74,.92);fills[other(it)]=rr(.12,.2);}
+  else if(u<0.93){if(rand()<0.3)fills[it]=rr(.12,.2);}
+  else if(u<0.95){fills[it]=rr(.74,.92);fills[other(it)]=rr(.74,.92);}
+  else if(u<0.975){fills[it]=rr(.19,.73);}
+  else{fills[it]=rr(.2,.37);}
+  return{fills,...classify(fills)};});}
+
+/* jawaban akhir satu soal: {ans} | {pending:true,review:bool} */
+function finalAnswer(ex,kode,qi){
+ const sh=ex.sheets[kode];if(!sh||sh.state!=='terbaca')return{pending:true,review:false};
+ const rv=ex.reviews[kode+'|'+qi];if(rv!==undefined)return{ans:rv<0?null:rv};
+ const q=sh.q[qi];
+ if(q.status==='detected')return{ans:q.answer};
+ if(q.status==='blank')return{ans:null};
+ return{pending:true,review:true};}
+
+/* skor: bilangan bulat sen, pembulatan setengah ke atas pada hitungan bilangan bulat (tanpa float) */
+function scoreFor(key,answers){let b=0,k=0,s=0;
+ answers.forEach((a,i)=>{if(a==null)k++;else if(a===key[i])b++;else s++;});
+ const n=key.length;return{benar:b,salah:s,kosong:k,cents:Math.floor((b*20000+n)/(2*n))};}
+
+function result(ex,kode){
+ const sh=ex.sheets[kode];
+ if(!sh)return{state:'belum'};
+ if(sh.state==='ditolak')return{state:'ditolak',alasan:sh.alasan};
+ const ans=[];let pend=0;
+ ex.key.forEach((_,i)=>{const f=finalAnswer(ex,kode,i);if(f.pending)pend++;else ans.push(f.ans);});
+ if(pend)return{state:'cek',pend};
+ return{state:'final',...scoreFor(ex.key,ans)};}
+
+function queue(S,ex){const out=[];const kl=S.kelas.find(k=>k.id===ex.kelas);
+ for(const kode of kl.siswa){const sh=ex.sheets[kode];if(!sh||sh.state!=='terbaca')continue;
+  ex.key.forEach((_,i)=>{const f=finalAnswer(ex,kode,i);if(f.pending&&f.review)out.push({kode,qi:i});});}
+ return out;}
+
+function recap(S,ex){const kl=S.kelas.find(k=>k.id===ex.kelas);
+ const rows=kl.siswa.map(kode=>({kode,...result(ex,kode)}));
+ const fin=rows.filter(r=>r.state==='final'),n=fin.length;
+ const sum=fin.reduce((a,r)=>a+r.cents,0);
+ return{rows,final:n,total:rows.length,
+  avg:n?Math.floor((2*sum+n)/(2*n)):null,min:n?Math.min(...fin.map(r=>r.cents)):null,max:n?Math.max(...fin.map(r=>r.cents)):null};}
+
+const csvCell=v=>{let s=String(v==null?'':v);if(/^[=+\-@\t\r]/.test(s))s="'"+s;return /[;"\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;};
+const STATE_TXT={belum:'belum dipindai',ditolak:'foto ditolak',cek:'menunggu cek ulang',final:'final'};
+function csvFor(S,ex){const r=recap(S,ex);
+ const lines=[['kode_peserta','benar','salah','kosong','skor','status'].join(';')];
+ r.rows.forEach(x=>lines.push([x.kode,x.state==='final'?x.benar:'',x.state==='final'?x.salah:'',x.state==='final'?x.kosong:'',x.state==='final'?fmt(x.cents):'',STATE_TXT[x.state]].map(csvCell).join(';')));
+ return '﻿'+lines.join('\r\n')+'\r\n';}
+
+/* ---------- state ---------- */
+function seed(){
+ const rand=rng(20261103);
+ const mk=(id,n)=>({id,siswa:Array.from({length:n},(_,i)=>id+'-'+String(i+1).padStart(3,'0'))});
+ const kelas=[mk('8A',24),mk('8B',22)];
+ const key=Array.from({length:40},()=>Math.floor(rand()*5));
+ const ex={id:'u1',judul:'UH Matematika Bab 3 (contoh)',kelas:'8A',n:40,key,sheets:{},reviews:{},dibuat:'2026-11-03'};
+ kelas[0].siswa.forEach((kode,i)=>{
+  if(i<21)ex.sheets[kode]={state:'terbaca',q:genSheet(rand,key,0.4+0.5*rand())};
+  else if(i===21)ex.sheets[kode]={state:'ditolak',alasan:'Marka sudut kanan-bawah tidak terlihat. Foto ulang.'};});
+ return{v:1,session:false,kelas,ujian:[ex],seq:0,uid:1};}
+let S;
+function load(){try{const t=localStorage.getItem(KEY);if(t){const o=JSON.parse(t);if(o&&o.v===1)return o;}}catch(e){}return null;}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){toast('Gagal menyimpan ke penyimpanan lokal.');}}
+S=load()||seed();
+const exOf=id=>S.ujian.find(u=>u.id===id);
+
+function saveFile(name,mime,text){
+ if(ANDROID){window.AndroidBridge.share(name,text);return;}
+ const a=h('a',{href:URL.createObjectURL(new Blob([text],{type:mime+';charset=utf-8'})),download:name});
+ document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);}
+
+/* ---------- views ---------- */
+function layout(title,back,...body){
+ $app.replaceChildren(
+  h('header',{class:'top'},back?h('a',{class:'back',href:back,'aria-label':'Kembali'},'‹'):null,h('h1',{},title),h('span',{class:'chip mock'},'DATA MOCKUP')),
+  h('main',{},...body));window.scrollTo(0,0);}
+
+function vLogin(){
+ layout('Periksa Ujian',null,
+  h('div',{class:'card'},h('h2',{},'Mode demo'),
+   h('p',{class:'muted'},'Semua data di aplikasi ini contoh (mockup) dan disimpan hanya di perangkat ini. Tidak ada koneksi ke server, dan pembacaan foto LJK masih simulasi.'),
+   h('button',{class:'btn pri block',id:'login',onclick:()=>{S.session=true;save();history.replaceState(null,'','#/');render();}},'Masuk sebagai Guru Demo')));}
+
+function exStats(ex){const q=queue(S,ex).length,r=recap(S,ex);
+ return{q,scanned:r.rows.filter(x=>x.state!=='belum'&&x.state!=='ditolak').length,total:r.total};}
+
+function vHome(){
+ const cards=S.ujian.map(ex=>{const st=exStats(ex);
+  return h('a',{class:'card',href:'#/u/'+ex.id+'/ringkas',style:'display:block;text-decoration:none;color:inherit'},
+   h('div',{class:'row sb'},h('h3',{},ex.judul),st.q?h('span',{class:'chip warn'},st.q+' perlu cek'):h('span',{class:'chip ok'},'tidak ada antrean')),
+   h('div',{class:'muted'},'Kelas '+ex.kelas+' · '+ex.n+' soal · '+st.scanned+'/'+st.total+' lembar dibaca'));});
+ layout('Beranda',null,
+  h('div',{class:'row sb',style:'margin-bottom:12px'},h('b',{},'Ujian saya'),h('a',{class:'btn pri sm',href:'#/baru',id:'new'},'+ Buat ujian')),
+  ...cards,
+  h('div',{class:'row'},h('a',{class:'btn',href:'#/kelas'},'Kelas & siswa'),h('a',{class:'btn',href:'#/data'},'Data & cadangan')));}
+
+function vKelas(){
+ const msg=h('div',{id:'imp-msg',class:'muted'});
+ const ta=h('textarea',{id:'imp-text',rows:'4',placeholder:'Satu kode peserta per baris, mis. 8A-025'});
+ const sel=h('select',{id:'imp-kelas'},S.kelas.map(k=>h('option',{value:k.id},k.id)));
+ const run=()=>{
+  const kl=S.kelas.find(k=>k.id===sel.value),exist=new Set(S.kelas.flatMap(k=>k.siswa)),ok=[],bad=[];
+  ta.value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean).forEach((c,i)=>{
+   if(!/^[A-Za-z0-9-]{3,20}$/.test(c))bad.push('baris '+(i+1)+': format tidak valid');
+   else if(exist.has(c)||ok.includes(c))bad.push('baris '+(i+1)+': kode '+c+' sudah ada');else ok.push(c);});
+  kl.siswa.push(...ok);if(ok.length)save();
+  msg.textContent=ok.length+' diterima, '+bad.length+' ditolak.'+(bad.length?' '+bad.join('; '):'');
+  if(ok.length){ta.value='';}};
+ layout('Kelas & siswa','#/',
+  ...S.kelas.map(k=>h('div',{class:'card'},h('h3',{},'Kelas '+k.id+' ('+k.siswa.length+' siswa)'),h('div',{class:'chips'},k.siswa.map(c=>h('span',{class:'chip'},c))))),
+  h('div',{class:'card'},h('h3',{},'Impor kode peserta'),h('p',{class:'muted'},'Hanya kode peserta, tanpa nama (keputusan pilot).'),
+   h('label',{for:'imp-kelas'},'Kelas'),sel,h('label',{for:'imp-text'},'Daftar kode'),ta,
+   h('div',{style:'margin-top:10px'},h('button',{class:'btn pri',id:'imp-run',onclick:run},'Impor')),msg));}
+
+function vNew(){
+ const st={judul:'',kelas:S.kelas[0].id,n:20,key:[]};
+ const err=h('div',{class:'err',id:'new-err',role:'alert'});
+ const grid=h('div',{id:'key-grid'});
+ const paint=()=>{grid.replaceChildren(...Array.from({length:st.n},(_,i)=>h('div',{class:'keyrow'},h('span',{},String(i+1)),
+  OPTS.map((o,j)=>h('button',{type:'button','data-q':i,'data-o':j,class:st.key[i]===j?'on':'',onclick:()=>{st.key[i]=j;paint();}},o)))));};
+ const nIn=h('input',{type:'number',id:'new-n',min:'1',max:'40',value:'20',onchange:e=>{const v=Math.max(1,Math.min(40,parseInt(e.target.value,10)||1));e.target.value=v;st.n=v;st.key.length=Math.min(st.key.length,v);paint();}});
+ const submit=()=>{
+  const j=document.getElementById('new-judul').value.trim(),ks=document.getElementById('new-kelas').value;
+  if(!j){err.textContent='Judul ujian wajib diisi.';return;}
+  const miss=[];for(let i=0;i<st.n;i++)if(st.key[i]==null)miss.push(i+1);
+  if(miss.length){err.textContent='Kunci belum lengkap: soal '+miss.slice(0,12).join(', ')+(miss.length>12?' dan '+(miss.length-12)+' lainnya':'')+'. Ujian belum bisa disimpan.';return;}
+  const id='u'+(++S.uid);S.ujian.push({id,judul:j,kelas:ks,n:st.n,key:st.key.slice(0,st.n),sheets:{},reviews:{},dibuat:new Date().toISOString().slice(0,10)});save();go('#/u/'+id+'/ringkas');};
+ layout('Buat ujian','#/',
+  h('div',{class:'card'},
+   h('label',{for:'new-judul'},'Judul ujian'),h('input',{type:'text',id:'new-judul',maxlength:'80'}),
+   h('label',{for:'new-kelas'},'Kelas'),h('select',{id:'new-kelas'},S.kelas.map(k=>h('option',{value:k.id},k.id))),
+   h('label',{for:'new-n'},'Jumlah soal (1-40, opsi A-E)'),nIn),
+  h('div',{class:'card'},h('h3',{},'Kunci jawaban'),grid),
+  h('div',{class:'card'},h('h3',{},'Aturan nilai'),h('p',{class:'muted'},'Jawaban kosong = 0. Tanda ganda atau ragu wajib dicek guru. Tanpa nilai negatif. Skor = benar ÷ jumlah soal × 100, dibulatkan 2 desimal.')),
+  err,h('button',{class:'btn pri block',id:'new-save',onclick:submit},'Simpan ujian'));
+ paint();}
+
+function tabs(ex,on){const q=queue(S,ex).length;
+ return h('nav',{class:'tabs'},[['ringkas','Ringkasan'],['pindai','Pindai'],['cek','Cek ulang'+(q?'':''),q],['nilai','Nilai']].map(([k,t,n])=>
+  h('a',{href:'#/u/'+ex.id+'/'+k,class:on===k?'on':'','data-tab':k},t,n?h('span',{class:'n'},n):null)));}
+
+function vRingkas(ex){
+ layout(ex.judul,'#/',tabs(ex,'ringkas'),
+  h('div',{class:'card'},h('div',{class:'muted'},'Kelas '+ex.kelas+' · '+ex.n+' soal · opsi A-E · dibuat '+ex.dibuat),
+   h('p',{class:'muted',style:'margin:8px 0 0'},'Aturan: kosong = 0; ganda/ragu dicek guru; tanpa nilai negatif; bobot sama per soal.')),
+  h('div',{class:'card'},h('h3',{},'Kunci jawaban'),h('div',{class:'keygrid'},ex.key.map((k,i)=>h('div',{},h('b',{},String(i+1)),OPTS[k])))),
+  h('a',{class:'btn block',href:'#/lembar/'+ex.id,id:'to-lembar'},'Lihat dan cetak LJK'));}
+
+function sheetSvg(ex,kode){
+ const s=sv('svg',{viewBox:'0 0 210 297',class:'sheet',xmlns:NS});
+ s.append(sv('rect',{x:0,y:0,width:210,height:297,fill:'#fff'}));
+ [[18,18,16],[192,18,10],[192,279,10],[18,279,10]].forEach(([cx,cy,z])=>s.append(sv('rect',{x:cx-z/2,y:cy-z/2,width:z,height:z,fill:'#000'})));
+ const T=(x,y,sz,t,w)=>s.append(sv('text',{x,y,'font-size':sz,'font-family':'Arial,Helvetica,sans-serif','font-weight':w||400,fill:'#000'},t));
+ T(62,24,4.2,'LEMBAR JAWABAN','700');T(40,32,3.2,ex.judul);T(40,38,3.2,'Kelas '+ex.kelas+'   Kode peserta: '+(kode||'________'),'700');
+ [34,119].forEach(x=>OPTS.forEach((o,j)=>T(x+j*11-1.2,52,3.4,o,'700')));
+ for(let q=0;q<ex.n;q++){const col=q<20?0:1,row=q%20,y=60+row*10.5;
+  T([34,119][col]-13,y+1.2,3,String(q+1));
+  for(let o=0;o<5;o++)s.append(sv('circle',{cx:[34,119][col]+o*11,cy:y,r:3.5,fill:'none',stroke:'#000','stroke-width':0.35}));}
+ return s;}
+
+function vLembar(ex,kode){
+ const kl=S.kelas.find(k=>k.id===ex.kelas);
+ const sel=h('select',{id:'lembar-pilih',onchange:e=>go('#/lembar/'+ex.id+'/'+e.target.value)},
+  h('option',{value:''},'Kosong (tanpa kode)'),h('option',{value:'*',selected:kode==='*'},'Semua siswa ('+kl.siswa.length+' lembar)'),
+  kl.siswa.map(c=>h('option',{value:c,selected:kode===c},c)));
+ const list=kode==='*'?kl.siswa:[kode||''];
+ layout('LJK: '+ex.judul,'#/u/'+ex.id+'/ringkas',
+  h('div',{class:'card noprint'},h('label',{for:'lembar-pilih'},'Lembar untuk'),sel,
+   h('p',{class:'muted'},'Cetak di kertas A4 dengan skala 100% (jangan "Fit to page"). Pembaca memakai empat marka hitam di sudut.'),
+   ANDROID?h('p',{class:'muted'},'Cetak belum tersedia di aplikasi Android ini. Buka berkas yang sama di Chrome atau PC untuk mencetak.'):h('button',{class:'btn pri',id:'print',onclick:()=>window.print()},'Cetak')),
+  h('div',{class:'sheetwrap'},list.map(c=>sheetSvg(ex,c))));}
+
+function vPindai(ex,flash){
+ const kl=S.kelas.find(k=>k.id===ex.kelas);
+ const todo=kl.siswa.filter(c=>{const s=ex.sheets[c];return !s||s.state!=='terbaca';});
+ const sel=h('select',{id:'scan-siswa'},todo.map(c=>h('option',{value:c},c+(ex.sheets[c]?' (foto ulang)':''))));
+ const file=h('input',{type:'file',id:'scan-file',accept:'image/*'});
+ const prev=h('div',{id:'scan-prev'});const msg=h('div',{id:'scan-msg',role:'status',class:flash&&flash.bad?'err':''},flash?flash.text:'');
+ file.addEventListener('change',()=>{prev.replaceChildren();if(file.files[0])prev.append(h('img',{src:URL.createObjectURL(file.files[0]),alt:'Pratinjau foto',style:'max-width:100%;max-height:220px;border-radius:10px;margin-top:8px'}));});
+ const run=()=>{
+  if(!sel.value){msg.textContent='Semua lembar sudah dibaca.';return;}
+  if(!file.files[0]){msg.className='err';msg.textContent='Pilih atau ambil foto LJK dulu.';return;}
+  const n=++S.seq,kode=sel.value;
+  if(n%4===0){ex.sheets[kode]={state:'ditolak',alasan:'Marka sudut ke-2 tidak terlihat. Foto ulang dengan keempat sudut masuk bingkai.'};save();
+   vPindai(ex,{bad:true,text:'Foto '+kode+' ditolak (simulasi): '+ex.sheets[kode].alasan});return;}
+  ex.sheets[kode]={state:'terbaca',q:genSheet(rng(7000+n),ex.key,0.4+0.5*rng(9000+n)())};save();
+  toast('Lembar '+kode+' dibaca (simulasi).');vPindai(ex);};
+ const chipOf=r=>r.state==='belum'?h('span',{class:'chip'},'belum'):r.state==='ditolak'?h('span',{class:'chip bad'},'foto ulang'):r.state==='cek'?h('span',{class:'chip warn'},r.pend+' perlu cek'):h('span',{class:'chip ok'},'dibaca');
+ layout(ex.judul,'#/',tabs(ex,'pindai'),
+  h('div',{class:'card'},h('h3',{},'Pindai lembar'),
+   h('p',{class:'muted'},'SIMULASI: foto yang dipilih tidak dibaca. Hasil bacaan contoh dibuat otomatis. Pembaca foto sungguhan belum ada di prototipe ini.'),
+   h('label',{for:'scan-siswa'},'Siswa'),sel,h('label',{for:'scan-file'},'Foto LJK'),file,prev,
+   h('div',{style:'margin-top:10px'},h('button',{class:'btn pri',id:'scan-run',onclick:run},'Baca (simulasi)')),msg),
+  h('div',{class:'card'},h('h3',{},'Status lembar'),h('table',{},h('tbody',{},kl.siswa.map(c=>h('tr',{},h('td',{},c),h('td',{style:'text-align:right'},chipOf(result(ex,c)))))))));}
+
+function bubbleView(fills){
+ return h('div',{class:'bubbles'},fills.map((f,i)=>h('div',{class:'bub'},
+  sv('svg',{viewBox:'0 0 40 40'},sv('circle',{cx:20,cy:20,r:17,fill:'currentColor','fill-opacity':f,stroke:'currentColor','stroke-width':2})),
+  h('b',{},OPTS[i]),h('div',{class:'muted'},Math.round(f*100)+'%'))));}
+
+function vCek(ex){
+ const q=queue(S,ex);
+ if(!q.length){layout(ex.judul,'#/',tabs(ex,'cek'),h('div',{class:'card',id:'cek-kosong'},h('h3',{},'Antrean kosong'),h('p',{class:'muted'},'Tidak ada soal yang perlu dicek ulang.')));return;}
+ const it=q[0],sh=ex.sheets[it.kode].q[it.qi];
+ const why={multiple:'Lebih dari satu bulatan terisi',ambiguous:'Isian tipis atau tidak jelas'}[sh.status];
+ const pick=v=>{ex.reviews[it.kode+'|'+it.qi]=v;save();vCek(ex);};
+ layout(ex.judul,'#/',tabs(ex,'cek'),
+  h('div',{class:'card'},h('div',{class:'row sb'},h('b',{},it.kode+' · soal '+(it.qi+1)),h('span',{class:'chip warn'},why)),
+   h('div',{class:'muted'},q.length+' soal tersisa'),bubbleView(sh.fills),
+   h('div',{class:'answers'},OPTS.map((o,i)=>h('button',{class:'btn',type:'button','data-ans':i,onclick:()=>pick(i)},o)),h('button',{class:'btn',type:'button','data-ans':'-1',onclick:()=>pick(-1)},'Kosong')),
+   h('p',{class:'muted'},'Pilih jawaban sesuai lembar asli. Pilihan Anda dicatat.')));}
+
+function vNilai(ex){
+ const r=recap(S,ex);
+ const chip=x=>x.state==='final'?h('span',{class:'chip ok'},'final'):x.state==='cek'?h('span',{class:'chip warn'},'cek ulang'):x.state==='ditolak'?h('span',{class:'chip bad'},'foto ulang'):h('span',{class:'chip'},'belum');
+ layout(ex.judul,'#/',tabs(ex,'nilai'),
+  h('div',{class:'stat'},h('div',{},h('b',{id:'st-n'},r.final+'/'+r.total),h('span',{},'final')),h('div',{},h('b',{id:'st-avg'},r.avg==null?'-':fmt(r.avg)),h('span',{},'rata-rata')),
+   h('div',{},h('b',{id:'st-min'},r.min==null?'-':fmt(r.min)),h('span',{},'terendah')),h('div',{},h('b',{id:'st-max'},r.max==null?'-':fmt(r.max)),h('span',{},'tertinggi'))),
+  r.final<r.total?h('p',{class:'muted'},'Rekap hanya menghitung lembar berstatus final. Nilai yang belum lengkap tidak disajikan sebagai final.'):null,
+  h('div',{class:'card'},h('table',{id:'nilai-tbl'},h('thead',{},h('tr',{},h('th',{},'Kode'),h('th',{class:'num'},'B'),h('th',{class:'num'},'S'),h('th',{class:'num'},'K'),h('th',{class:'num'},'Skor'),h('th',{},'Status'))),
+   h('tbody',{},r.rows.map(x=>h('tr',{'data-kode':x.kode},h('td',{},x.kode),h('td',{class:'num'},x.state==='final'?x.benar:''),h('td',{class:'num'},x.state==='final'?x.salah:''),h('td',{class:'num'},x.state==='final'?x.kosong:''),h('td',{class:'num'},x.state==='final'?fmt(x.cents):''),h('td',{},chip(x))))))),
+  h('button',{class:'btn pri block',id:'export',onclick:()=>{saveFile('nilai-'+ex.kelas+'-'+ex.id+'.csv','text/csv',csvFor(S,ex));}},ANDROID?'Bagikan CSV':'Unduh CSV'),
+  h('p',{class:'muted'},'CSV: pemisah titik koma, koma desimal, UTF-8 (cocok untuk Excel berbahasa Indonesia).'));}
+
+function vData(){
+ const raw=h('textarea',{id:'bk-text',rows:'4',placeholder:'Tempel JSON cadangan di sini untuk memulihkan'});
+ layout('Data & cadangan','#/',
+  h('div',{class:'card'},h('h3',{},'Penyimpanan lokal'),h('p',{class:'muted'},'Data tersimpan di perangkat ini (penyimpanan aplikasi), bukan di server. Menghapus data aplikasi atau browser menghapusnya juga.')),
+  h('div',{class:'card'},h('h3',{},'Cadangan'),
+   h('button',{class:'btn',id:'bk-export',onclick:()=>saveFile('cadangan-periksa-ujian.json','application/json',JSON.stringify(S))},ANDROID?'Bagikan cadangan JSON':'Unduh cadangan JSON'),
+   h('label',{for:'bk-text'},'Pulihkan dari cadangan'),raw,
+   h('div',{style:'margin-top:10px'},h('button',{class:'btn',id:'bk-import',onclick:()=>{try{const o=JSON.parse(raw.value);if(!o||o.v!==1||!Array.isArray(o.kelas)||!Array.isArray(o.ujian))throw 0;S=o;save();toast('Data dipulihkan.');go('#/');}catch(e){toast('Cadangan tidak valid.');}}},'Pulihkan'))),
+  h('div',{class:'card'},h('h3',{},'Reset data demo'),h('p',{class:'muted'},'Mengembalikan semua data ke contoh awal. Perubahan Anda hilang.'),
+   h('button',{class:'btn',id:'reset',onclick:()=>{S=seed();S.session=true;save();toast('Data demo dikembalikan.');go('#/');}},'Reset')));}
+
+/* ---------- router ---------- */
+function go(hash){if(location.hash===hash)render();else location.hash=hash;}
+function render(){
+ if(!S.session){vLogin();return;}
+ const p=location.hash.replace(/^#\/?/,'').split('/');
+ try{
+  if(p[0]===''||p[0]===undefined)return vHome();
+  if(p[0]==='kelas')return vKelas();
+  if(p[0]==='baru')return vNew();
+  if(p[0]==='data')return vData();
+  if(p[0]==='lembar'){const ex=exOf(p[1]);if(ex)return vLembar(ex,p[2]);}
+  if(p[0]==='u'){const ex=exOf(p[1]);if(ex){const t=p[2]||'ringkas';
+   return({ringkas:vRingkas,pindai:vPindai,cek:vCek,nilai:vNilai}[t]||vRingkas)(ex);}}
+ }catch(e){layout('Terjadi kesalahan','#/',h('div',{class:'card err'},String(e)));return;}
+ vHome();}
+window.addEventListener('hashchange',render);
+window.__pu={classify,scoreFor,finalAnswer,result,recap,csvFor,csvCell,fmt,genSheet,get S(){return S;}};
+render();
+})();
+</script>
+</body>
+</html>
