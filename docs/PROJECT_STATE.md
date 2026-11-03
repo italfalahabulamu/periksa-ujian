@@ -20,6 +20,8 @@ Aplikasi mobile untuk sekolah: (A) Koreksi Jawaban (pilihan ganda via foto LJK +
 
 - User 2026-11-03: setuju memakai PWA untuk pilot (native tetap jalur R3).
 
+- User 2026-11-03: "gunakan data mockup" untuk data sekolah; asumsi di docs/01-product/data-sekolah-mock.md. PWA offline dibangun dari mockup di app/pwa/ (belum di-hosting).
+
 ## Asumsi yang belum dikonfirmasi
 - Target akurasi pindai (usulan di spike-01): salah baca tak ditandai <= 0,5%, ragu <= 5%.
 - Platform pertama Android; iOS ditunda.
